@@ -1,0 +1,11 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ comment.post }}{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {{ replys_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="回复"></p>
+    </form>
+{% endblock %}

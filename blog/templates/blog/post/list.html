@@ -1,0 +1,35 @@
+
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}My blog{% endblock %}
+<!---将posts赋给pagination.html中的Page对象,--->
+{% block content %}
+    <h1>My blog</h1>
+    {% if tag %}
+        <h2>Posts tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+
+    {% for post in posts %}
+        <h2>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </h2>
+{#        {% if post.tags.count %}#}
+{#            <p>Tags:<span class="label label-success">{{ post.tags.all|join:"," }}</span></p>#}
+{#        {% endif %}#}
+        <p class="date">
+            发布时间: {{ post.publish }} 作者: {{ post.author }}
+        </p>
+{#        {{ post.body|truncatewords:30|linebreaks }}#}
+        {{ post.body|markdown|truncatechars_html:30 }}
+    <p class="tags">
+        <span class="label label-danger">标签:</span>
+        {% for tag in post.tags.all %}
+            <span class="label label-info"><a href="{% url "blog:post_list_by_tag" tag.slug %}">{{ tag.name }}</a></span>
+            {% if not forloop.last %}、{% endif %}
+        {% endfor %}
+    </p>
+    {% endfor %}
+    {% include "pagination.html" with page=posts %}
+{% endblock %}

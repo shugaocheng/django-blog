@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+{#    {% for error in form %}#}
+{#    <div>#}
+{#    {{ error.errors }}#}
+{#    {{ error.label_tag }}{{ error }}#}
+{#    </div>#}
+{#    {% endfor %}#}
+    {% if sent %}
+    <h1>邮件发送成功</h1>
+    <p>
+    "{{ post.title }}"已成功发送到 "{{cd_to}}".
+    </p>
+    {% else %}
+    <h1>分享 "{{ post.title }}" 的文章到邮箱</h1>
+    <form action="." method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="发送" >
+    </form>
+    {% endif %}
+{% endblock %}
